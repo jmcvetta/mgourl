@@ -11,7 +11,7 @@ import (
 
 
 type AuthInfo struct {
-	db, user, pass string
+	Db, User, Pass string
 }
 
 func isOptSep(c rune) bool {
@@ -40,24 +40,24 @@ func ParseURL(url string) (servers []string, auth AuthInfo, options map[string]s
 			err = errors.New("Credentials must be provided as user:pass@host")
 			return
 		}
-		auth.user = pair[0]
-		auth.pass = pair[1]
+		auth.User = pair[0]
+		auth.Pass = pair[1]
 		url = url[c+1:]
-		auth.db = "admin"
+		auth.Db = "admin"
 	}
 	if c := strings.Index(url, "/"); c != -1 {
 		if c != len(url)-1 {
-			auth.db = url[c+1:]
+			auth.Db = url[c+1:]
 		}
 		url = url[:c]
 	}
-	if auth.user == "" {
-		if auth.db != "" {
+	if auth.User == "" {
+		if auth.Db != "" {
 			err = errors.New("Database name only makes sense with credentials")
 			return
 		}
-	} else if auth.db == "" {
-		auth.db = "admin"
+	} else if auth.Db == "" {
+		auth.Db = "admin"
 	}
 	servers = strings.Split(url, ",")
 	// XXX This is untested. The test suite doesn't use the standard port.
